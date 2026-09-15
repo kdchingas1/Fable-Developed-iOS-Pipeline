@@ -42,7 +42,7 @@ jobs:
           ruby-version: "3.3"
           bundler-cache: true
       - run: bundle exec fastlane beta
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ipa
           path: build/*.ipa
