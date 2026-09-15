@@ -25,7 +25,7 @@ jobs:
     name: Markdown and gate checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Lint metadata character limits
         run: ./scripts/metadata-lint.sh
       - name: Verify gate files are well formed
@@ -40,7 +40,7 @@ jobs:
       matrix:
         os: [latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Select Xcode
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)" && xcodebuild -version
