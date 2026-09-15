@@ -7,3 +7,4 @@
 - [ ] StoreKit products implemented and tested with a `.storekit` configuration
 - [ ] Analytics events from `docs/METRICS.md` wired
 - [ ] Latest TestFlight build number recorded in `BUILD.md`
+- [ ] `licenses.md` complete; no GPL/LGPL dependencies; `PrivacyInfo.xcprivacy` reviewed

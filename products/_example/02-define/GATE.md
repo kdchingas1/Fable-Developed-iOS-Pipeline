@@ -6,3 +6,4 @@
 - [ ] `pricing.md` has one model, concrete product IDs, and a paywall moment
 - [ ] `naming.md` has a founder-approved name with availability confirmed
 - [ ] `STATUS.md` updated with name and pricing model
+- [ ] `trademark-clearance.md` verdict CLEAR (or CLEAR WITH MODIFIER) for the chosen name

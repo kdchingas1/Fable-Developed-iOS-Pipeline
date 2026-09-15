@@ -48,7 +48,7 @@ cd app && xcodegen generate && xcodebuild -scheme App -destination 'platform=iOS
 | `fastlane/` | Lanes for test, TestFlight beta, screenshots, and App Store release |
 | `.github/workflows/` | CI on every PR, TestFlight on `beta-*` tags, App Store on `v*` tags |
 | `scripts/` | Bootstrap, new-product, and gate-check helpers |
-| `docs/` | Pipeline deep-dive, architecture, metrics, App Store review checklist |
+| `docs/` | Pipeline deep-dive, architecture, metrics, App Store review checklist, legal and trademark guide |
 
 ## Principles
 
@@ -57,5 +57,6 @@ cd app && xcodegen generate && xcodebuild -scheme App -destination 'platform=iOS
 3. **One product per directory.** Everything about an app lives under `products/<slug>/` so context is never lost.
 4. **Ship small, ship often.** The template ships to TestFlight from day one of Stage 4.
 5. **The pipeline loops.** Stage 7 feeds back into Stage 2 with real usage data.
+6. **Legal is a stage input, not an afterthought.** Trademark clearance before the name is final, license and privacy-manifest review before TestFlight, the legal checklist before submission. `/legal-check` runs it; `docs/LEGAL.md` explains it.
 
 See [`docs/PIPELINE.md`](docs/PIPELINE.md) for the full stage-by-stage guide.

@@ -24,7 +24,7 @@ swiftformat . && swiftlint --strict
 
 ```
 Sources/
-  App/                 AppMain, AppEnvironment, RootView, assets
+  App/                 AppMain, AppEnvironment, RootView, assets, PrivacyInfo.xcprivacy
   Core/DesignSystem/   Theme tokens, shared views
   Core/Services/       Protocols + live and fake implementations
   Features/<Name>/     View + ViewModel (+ feature-local models)

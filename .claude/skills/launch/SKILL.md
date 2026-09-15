@@ -18,15 +18,17 @@ Working directory: `products/$0/06-launch/`. Templates: `pipeline/06-launch/temp
 3. **App Store Connect.** Invoke `release-manager` to complete `asc-setup.md`: app record,
    privacy labels, age rating, IAP products from `02-define/pricing.md`, review notes with demo
    account, export compliance.
-4. **Beta.** `bundle exec fastlane beta` to an external TestFlight group; collect feedback
+4. **Legal.** Run `/legal-check $0 6`: `legal-checklist.md`, `privacy-policy.md`, and
+   `terms-of-service.md` if needed. The founder publishes the policy pages before submission.
+5. **Beta.** `bundle exec fastlane beta` to an external TestFlight group; collect feedback
    for at least 3 days; fix P0/P1 via `/build`.
-5. **Submit.** Tag `v<version>`; the `release.yml` workflow runs `fastlane release` with
+6. **Submit.** Tag `v<version>`; the `release.yml` workflow runs `fastlane release` with
    phased release on. Record submission date in `RELEASE.md`.
-6. **Review.** If rejected, follow the `release-manager` rejection procedure; log each round
+7. **Review.** If rejected, follow the `release-manager` rejection procedure; log each round
    in `RELEASE.md`.
-7. **Launch day** (`launch-checklist.md`): press kit, Product Hunt/Reddit posts, social,
+8. **Launch day** (`launch-checklist.md`): press kit, Product Hunt/Reddit posts, social,
    review prompt enabled, analytics dashboards verified.
-8. **Gate.** `RELEASE.md` has the live App Store URL. Complete `GATE.md`.
+9. **Gate.** `RELEASE.md` has the live App Store URL. Complete `GATE.md`.
 
 ## Rules
 

@@ -34,6 +34,7 @@ Stages and the skill that runs each one:
 | 5 | Test | `/test-app` | qa-engineer | Test report, release readiness |
 | 6 | Launch | `/launch` | aso-specialist, release-manager | Live on App Store |
 | 7 | Grow | `/grow` | growth-analyst | Weekly metrics review, next iteration |
+| 2, 4, 6 | Legal (cross-cutting) | `/legal-check` | legal-reviewer | Trademark clearance, license inventory, launch legal checklist |
 
 `/pipeline <slug>` orchestrates all of them in order and stops at the first failing gate.
 
@@ -59,6 +60,19 @@ Stages and the skill that runs each one:
 - When you cannot find evidence, write "unknown" and add it to the risks list. Do not guess.
 - Competitor teardowns must include: pricing, rating, review count, top 3 complaints from
   1-star reviews, top 3 praises from 5-star reviews, last update date.
+
+## Legal conventions (see `docs/LEGAL.md`)
+
+- No name is final until `02-define/trademark-clearance.md` says CLEAR.
+- Every dependency and asset appears in `04-build/licenses.md` with its license. GPL and LGPL
+  are never added.
+- `PrivacyInfo.xcprivacy` is updated in the same commit as any code that adds a required-reason
+  API, a data type, or an SDK.
+- Privacy labels, privacy policy, and the privacy manifest describe the same data. If one
+  changes, all three change.
+- Paywalls always show price, period, auto-renewal, trial terms, and Terms and Privacy links.
+- Claude never marks a legal item done without evidence and never states that something is
+  legally compliant; it says the checklist item is satisfied and lists what needs a lawyer.
 
 ## How to behave
 

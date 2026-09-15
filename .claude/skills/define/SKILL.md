@@ -22,7 +22,8 @@ For a post-launch increment, write to `02-define/increments/<name>/` instead.
 4. **Pricing** (`pricing.md`): choose one model, set the price, define the free tier or trial,
    list the StoreKit products (product IDs, type, duration, price tier) that Stage 6 will create.
 5. **Name candidates** (`naming.md`): 5 to 10 names with App Store, domain, and social handle
-   availability. The founder picks; record the pick in `STATUS.md`.
+   availability. Run `/legal-check $0 2` to produce `trademark-clearance.md`; only CLEAR names
+   go to the founder. Record the pick in `STATUS.md`.
 6. **Gate.** Complete `GATE.md`.
 
 ## Rules
