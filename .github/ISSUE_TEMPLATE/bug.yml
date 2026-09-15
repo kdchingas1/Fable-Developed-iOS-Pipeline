@@ -1,0 +1,27 @@
+name: Bug
+description: A defect found in Stage 5 testing or post-launch
+labels: [bug]
+body:
+  - type: input
+    id: product
+    attributes: { label: Product slug }
+    validations: { required: true }
+  - type: input
+    id: build
+    attributes: { label: Version and build }
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: [P0 blocks release, P1 fix before launch, P2 backlog]
+    validations: { required: true }
+  - type: textarea
+    id: steps
+    attributes: { label: Steps to reproduce }
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes: { label: Expected vs actual }
+  - type: input
+    id: device
+    attributes: { label: Device and OS }

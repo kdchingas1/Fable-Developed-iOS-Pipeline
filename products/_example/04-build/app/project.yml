@@ -1,0 +1,70 @@
+name: App
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: $(DEVELOPMENT_TEAM)
+    CODE_SIGN_STYLE: Manual
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: YES
+  configs:
+    Debug:
+      CODE_SIGN_STYLE: Automatic
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+
+configFiles:
+  Debug: Config/Debug.xcconfig
+  Release: Config/Release.xcconfig
+
+targets:
+  App:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.example
+        PROVISIONING_PROFILE_SPECIFIER: "match AppStore com.example.example"
+        CODE_SIGN_IDENTITY: "Apple Distribution"
+    info:
+      path: Config/Info.plist
+      properties:
+        CFBundleDisplayName: Example App
+        ITSAppUsesNonExemptEncryption: false
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+    scheme:
+      testTargets:
+        - AppTests
+        - AppUITests
+      gatherCoverageData: true
+      storeKitConfiguration: Config/Products.storekit
+
+  AppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/AppTests
+    dependencies:
+      - target: App
+
+  AppUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: UITests/AppUITests
+    dependencies:
+      - target: App

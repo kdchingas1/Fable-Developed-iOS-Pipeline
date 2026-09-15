@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "products/**/04-build/app/**"
+      - "!products/_*/**"
+      - "fastlane/**"
+      - ".github/workflows/ci.yml"
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APP_PROJECT_DIR: ${{ vars.APP_PROJECT_DIR || 'app' }}
+  SCHEME: App
+  SIMULATOR: iPhone 16
+
+jobs:
+  docs-and-gates:
+    name: Markdown and gate checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint metadata character limits
+        run: ./scripts/metadata-lint.sh
+      - name: Verify gate files are well formed
+        run: ./scripts/gate-check.sh --lint-all
+
+  ios:
+    name: Build and test (${{ matrix.os }})
+    runs-on: macos-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)" && xcodebuild -version
+
+      - name: Install tools
+        run: brew install xcodegen swiftlint swiftformat
+
+      - name: Ruby and fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Generate project
+        working-directory: ${{ env.APP_PROJECT_DIR }}
+        run: xcodegen generate
+
+      - name: Lint
+        working-directory: ${{ env.APP_PROJECT_DIR }}
+        run: swiftformat --lint . && swiftlint --strict
+
+      - name: Test
+        run: bundle exec fastlane test
+        env:
+          CI: "true"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: fastlane/test_output
+          retention-days: 7

@@ -1,0 +1,8 @@
+--swiftversion 6.0
+--indent 4
+--maxwidth 140
+--trimwhitespace always
+--stripunusedargs closure-only
+--self remove
+--header strip
+--disable wrapMultilineStatementBraces

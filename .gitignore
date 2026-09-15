@@ -1,0 +1,51 @@
+# macOS
+.DS_Store
+
+# Xcode
+*.xcodeproj/
+!*.xcodeproj/project.pbxproj
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+build/
+*.xcresult
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+fastlane/README.md
+fastlane/.env
+fastlane/.env.*
+!fastlane/.env.example
+
+# Ruby
+vendor/bundle/
+.bundle/
+
+# Secrets and local overrides
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+.env
+.env.local
+.claude/settings.local.json
+
+# Product working files that should not be committed
+products/**/04-build/app/*.xcodeproj/
+products/**/04-build/app/DerivedData/
+products/**/scratch/
+
+# XcodeGen generates this from project.yml
+app/Config/Info.plist
+products/**/04-build/app/Config/Info.plist

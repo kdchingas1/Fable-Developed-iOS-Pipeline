@@ -1,0 +1,2 @@
+// Debug build settings. Override per product as needed.
+OTHER_SWIFT_FLAGS = $(inherited) -warnings-as-errors

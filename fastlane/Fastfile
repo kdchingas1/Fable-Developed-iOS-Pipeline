@@ -1,0 +1,111 @@
+# Fastlane lanes for the iOS pipeline. Every product uses this same file; the product is
+# selected with APP_PROJECT_DIR and APP_IDENTIFIER (see .env.example).
+
+default_platform(:ios)
+
+PROJECT_DIR = ENV.fetch("APP_PROJECT_DIR", "app")
+SCHEME = ENV.fetch("SCHEME", "App")
+XCODEPROJ = "#{PROJECT_DIR}/#{SCHEME}.xcodeproj"
+SIMULATOR = ENV.fetch("SIMULATOR", "iPhone 16")
+
+platform :ios do
+  before_all do
+    setup_ci if ENV["CI"]
+    sh("cd ../#{PROJECT_DIR} && xcodegen generate")
+  end
+
+  desc "Lint and format check"
+  lane :lint do
+    sh("cd ../#{PROJECT_DIR} && swiftformat --lint . && swiftlint --strict")
+  end
+
+  desc "Run unit and UI tests on the simulator"
+  lane :test do
+    run_tests(
+      project: XCODEPROJ,
+      scheme: SCHEME,
+      devices: [SIMULATOR],
+      code_coverage: true,
+      result_bundle: true,
+      output_directory: "fastlane/test_output",
+      xcargs: "-skipPackagePluginValidation"
+    )
+  end
+
+  desc "Capture App Store screenshots via the ScreenshotTests UI test"
+  lane :screenshots do
+    capture_screenshots(
+      project: XCODEPROJ,
+      scheme: SCHEME,
+      devices: ["iPhone 16 Pro Max", "iPad Pro 13-inch (M4)"],
+      languages: ["en-US"],
+      only_testing: ["AppUITests/ScreenshotTests"],
+      output_directory: "fastlane/screenshots",
+      clear_previous_screenshots: true
+    )
+  end
+
+  desc "Build a signed release IPA. Build number = CI run number or git commit count."
+  private_lane :build_release do
+    api_key
+    match(type: "appstore", readonly: true)
+    build_number = ENV["GITHUB_RUN_NUMBER"] || sh("git rev-list --count HEAD").strip
+    increment_build_number(build_number: build_number, xcodeproj: XCODEPROJ)
+    build_app(
+      project: XCODEPROJ,
+      scheme: SCHEME,
+      export_method: "app-store",
+      output_directory: "build",
+      include_symbols: true
+    )
+  end
+
+  desc "Upload to TestFlight"
+  lane :beta do
+    build_release
+    upload_to_testflight(
+      api_key: lane_context[SharedValues::APP_STORE_CONNECT_API_KEY],
+      changelog: File.exist?("../CHANGELOG.md") ? File.read("../CHANGELOG.md").lines.first(20).join : "Beta build",
+      distribute_external: ENV["TESTFLIGHT_EXTERNAL"] == "true",
+      groups: ENV["TESTFLIGHT_GROUPS"]&.split(","),
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Upload metadata, screenshots, and build; submit for review with phased release"
+  lane :release do
+    build_release
+    upload_to_app_store(
+      api_key: lane_context[SharedValues::APP_STORE_CONNECT_API_KEY],
+      metadata_path: "fastlane/metadata",
+      screenshots_path: "fastlane/screenshots",
+      submit_for_review: true,
+      automatic_release: false,
+      phased_release: true,
+      precheck_include_in_app_purchases: false,
+      submission_information: { add_id_info_uses_idfa: false },
+      force: true
+    )
+  end
+
+  desc "Upload only metadata (ASO iteration without a new build)"
+  lane :metadata do
+    api_key
+    upload_to_app_store(
+      api_key: lane_context[SharedValues::APP_STORE_CONNECT_API_KEY],
+      metadata_path: "fastlane/metadata",
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      force: true
+    )
+  end
+
+  private_lane :api_key do
+    app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_content: ENV.fetch("ASC_KEY_CONTENT"),
+      is_key_content_base64: true
+    )
+  end
+end

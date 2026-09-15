@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git push -u origin *)",
+      "Bash(ls*)",
+      "Bash(cat*)",
+      "Bash(find*)",
+      "Bash(grep*)",
+      "Bash(rg*)",
+      "Bash(xcodegen*)",
+      "Bash(xcodebuild*)",
+      "Bash(xcrun*)",
+      "Bash(swift build*)",
+      "Bash(swift test*)",
+      "Bash(swiftlint*)",
+      "Bash(swiftformat*)",
+      "Bash(bundle exec fastlane test*)",
+      "Bash(bundle exec fastlane lint*)",
+      "Bash(./scripts/gate-check.sh*)",
+      "Bash(./scripts/new-product.sh*)",
+      "WebSearch",
+      "WebFetch"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(rm -rf /*)",
+      "Read(./fastlane/.env)",
+      "Read(./**/*.p8)",
+      "Read(./**/*.p12)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'f=$(jq -r \".tool_input.file_path // empty\"); case \"$f\" in *.swift) command -v swiftformat >/dev/null && swiftformat \"$f\" --quiet; command -v swiftlint >/dev/null && swiftlint lint --quiet --path \"$f\" || true;; esac'"
+          }
+        ]
+      }
+    ]
+  }
+}

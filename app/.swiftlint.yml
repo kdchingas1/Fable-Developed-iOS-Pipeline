@@ -1,0 +1,30 @@
+included:
+  - Sources
+  - Tests
+  - UITests
+disabled_rules:
+  - trailing_comma
+  - todo
+opt_in_rules:
+  - empty_count
+  - closure_spacing
+  - explicit_init
+  - first_where
+  - sorted_first_last
+  - unneeded_parentheses_in_closure_argument
+  - vertical_whitespace_closing_braces
+force_unwrapping:
+  severity: error
+force_try:
+  severity: error
+line_length:
+  warning: 140
+  error: 180
+  ignores_urls: true
+identifier_name:
+  min_length: 2
+  excluded: [id, x, y, s, m, l, xs, xl]
+type_body_length:
+  warning: 300
+file_length:
+  warning: 500

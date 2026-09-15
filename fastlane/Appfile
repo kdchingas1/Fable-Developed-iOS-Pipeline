@@ -1,0 +1,6 @@
+# Values come from environment variables so one Fastfile serves every product.
+# See fastlane/.env.example.
+app_identifier(ENV["APP_IDENTIFIER"] || "com.example.app")
+apple_id(ENV["APPLE_ID"])
+team_id(ENV["TEAM_ID"])
+itc_team_id(ENV["ITC_TEAM_ID"])
