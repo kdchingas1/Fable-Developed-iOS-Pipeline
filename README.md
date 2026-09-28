@@ -49,6 +49,7 @@ cd app && xcodegen generate && xcodebuild -scheme App -destination 'platform=iOS
 | `.github/workflows/` | CI on every PR, TestFlight on `beta-*` tags, App Store on `v*` tags |
 | `scripts/` | Bootstrap, new-product, and gate-check helpers |
 | `docs/` | Pipeline deep-dive, architecture, metrics, App Store review checklist, legal and trademark guide |
+| `hardware/` | 3D-printable hardware designs, outside the app pipeline: a slim TPU case for the Galaxy S26 Ultra |
 
 ## Principles
 
